@@ -18,7 +18,7 @@ const {
 } = require("../exercises/02_promiseConstructor");
 
 const writeFilePromise = util.promisify(fs.writeFile);
-
+// writeFilePromise("files/write/userName.txt", "data")
 /**
  * 파일에서 읽은 userId Array에서 userID들을 가지고와
  * 아래의 BASE_URL 뒤에 붙여서 해당 주소로 get 요청을 보냅니다.
@@ -35,7 +35,22 @@ const writeFilePromise = util.promisify(fs.writeFile);
 
 const BASE_URL = "https://koreanjson.com/users/";
 
-const fetchUsersAndWriteToFile = (readFilePath, writeFilePath) => {};
+const fetchUsersAndWriteToFile = (readFilePath, writeFilePath) => {
+  return getDataFromFilePromise(readFilePath)
+  .then( data => {// data = 배열
+    console.log(data);
+    let dataAll = data.map(el => getBodyFromGetRequestPromise(BASE_URL+el));  //
+    // console.log(dataAll);
+    // return dataAll;
+    return Promise.all(dataAll)
+    .then(data =>{
+      console.log(data);
+      return data.map(el => el.name + '\n')
+    })
+    .then(dataName =>writeFilePromise(writeFilePath, dataName.join(''))
+    )
+  })
+};
 
 module.exports = {
   fetchUsersAndWriteToFile
