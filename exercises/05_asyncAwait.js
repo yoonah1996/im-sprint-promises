@@ -45,10 +45,9 @@ const fetchUsersAndWriteToFileAsync = async (readFilePath, writeFilePath) => {
   // console.log(getUser); //[ { id: 1, name: '이정도', ...]
   const nserName = await getUser.map(el => el.name + '\n')
   // console.log(nserName);  // [ '이정도\n', '김재완\n', '김성은\n', '이주연\n', '구일모\n' ]
-  const saveName = writeFilePromise(writeFilePath, nserName.join(''));
+  const saveName = await writeFilePromise(writeFilePath, nserName.join(''));
   // console.log(saveName); //Promise { <pending> }
   return saveName;
-
 };
 
 module.exports = {
